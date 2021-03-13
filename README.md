@@ -80,6 +80,73 @@ new Vue({
 });
 ```
 
+**store.js**
+
+```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    tasks: [
+      {
+        id: 1,
+        task: 'ログイン画面_詳細',
+        detail: 'ログイン画面の詳細設計書を作成する',
+        done: 1
+      },
+      {
+        id: 2,
+        task: 'ログイン画面_実装',
+        detail: 'Vue.jsを使ってログイン画面を実装する',
+        done: 0
+      },
+      {
+        id: 3,
+        task: 'ログイン画面_テスト',
+        detail: 'ログイン画面をテストする',
+        done: 0
+      },
+      {
+        id: 4,
+        task: 'Vue.jsの本を買う',
+        detail: '',
+        done: 0
+      }
+    ],
+    nextId: 5
+  }
+});
+
+export default store;
+```
+
+**router.js**
+
+```js
+import Vue from 'vue';
+import VueRouter from 'vue-router'
+import List from './List.vue';
+
+Vue.use(VueRouter);
+
+const routes = [
+  {
+    path: '/tasks',
+    component: List
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+});
+
+export default router;
+```
+
 **App.vue**
 
 ```js
@@ -146,6 +213,12 @@ export default {
 ```
 
 <br>
+
+アプリケーションを起動し、ブラウザで以下のURLにアクセスして画面を確認してください。
+
+http://localhost:8080/tasks
+
+<br>
 <hr>
 
 ### 2.2 タスク詳細表示
@@ -165,6 +238,33 @@ export default {
 <br>
 
 #### プログラム
+
+**store.js**
+
+```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  （中略）
+  getters: {
+    getOne(state) {
+      return function(id) {
+        return state.tasks.find(tasks => tasks.id === id);
+      }
+    }
+  }
+});
+
+export default store;
+```
+
+**router.js**
+
+※以下のURLでタスク詳細画面へのルーティングを追加する。<br>http://localhost:8080/tasks/{id}
+
 
 **Edit.vue**　<span style="color:red">※???の部分を埋めて完成させてください。</span>
 
@@ -268,4 +368,4 @@ export default {
 
 - タスク削除後（ID:4のタスクを削除）
 
-<img src="./img/02_02.png" width="700px">
+<img src="./img/02_08.png" width="700px">
